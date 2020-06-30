@@ -162,6 +162,7 @@ class App extends Component {
               <Home
                 currentUser={this.state.currentUser}
                 addCurrentUser={this.addCurrentUser}
+                profilepic={this.state.currentUser.profilepic}
               />
             )}
           />

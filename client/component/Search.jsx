@@ -3,6 +3,8 @@ import List from "./List.jsx";
 import Bar from "./Bar.jsx";
 import "../styles/search.scss";
 
+// console.log("Search: ", this.props.profilepic);
+
 class Search extends Component {
   constructor() {
     super();
@@ -66,7 +68,10 @@ class Search extends Component {
             handleSubmit={this.handleSubmit}
             handleChange={this.handleChange}
           />
-          <List searchResults={this.state.results} />
+          <List
+            searchResults={this.state.results}
+            profilepic={this.props.profilepic}
+          />
         </div>
       );
   }
