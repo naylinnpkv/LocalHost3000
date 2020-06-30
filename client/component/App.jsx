@@ -12,7 +12,7 @@ class App extends Component {
     super();
 
     this.state = {
-      currentUser: {},
+      currentUser: { profilepic: "" },
       inEditMode: false,
       signedIn: false,
     };
@@ -24,6 +24,44 @@ class App extends Component {
     this.deleteProfile = this.deleteProfile.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.logoutButton = this.logoutButton.bind(this);
+    this.uploadImage = this.uploadImage.bind(this);
+  }
+
+  async uploadImage(e) {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "darwin");
+    console.log("Data", data);
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/deriue6x7/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    console.log("ALMOST TIME!!: ", this.state.currentUser);
+    console.log("data: ", data);
+    const file = await res.json();
+    let file_url = file.url;
+    console.log("File url: ", file_url);
+    // console.log("WE GOT IT!: ", file_url); //a url.
+
+    let id = this.state.currentUser.id;
+    // console.log("curr user: ", this.state.currentUser);
+    fetch(`http://localhost:8080/api/profile/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        username: this.state.currentUser.username,
+        password: this.state.currentUser.password,
+        name: this.state.currentUser.name,
+        home: this.state.currentUser.home,
+        email: this.state.currentUser.email,
+        type: this.state.currentUser.type,
+        profilepic: file_url,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   addCurrentUser(user) {
@@ -62,6 +100,7 @@ class App extends Component {
       () => console.log(this.state.currentUser)
     );
   }
+
   //after you clicked the button: making the request and updating the database with user input
   saveProfile(event) {
     event.preventDefault();
@@ -107,6 +146,7 @@ class App extends Component {
   }
 
   render() {
+    console.log("~~~", this.state.currentUser);
     return (
       <div className="app">
         <Header
@@ -144,6 +184,7 @@ class App extends Component {
                 deleteProfile={this.deleteProfile}
                 history={this.props.history}
                 handleSelect={this.handleSelect}
+                uploadImage={this.uploadImage}
               />
             )}
           />

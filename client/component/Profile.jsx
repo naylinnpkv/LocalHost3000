@@ -2,11 +2,67 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import "../styles/profile.scss";
 
+/*
+
+import React, { useState } from "react";
+// import './App.css';
+
+
+import './App.css'
+
+function App() {
+  const [image, setImage] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const uploadImage = async e => {
+    const files = e.target.files
+    const data = new FormData()
+    data.append('file', files[0])
+    data.append('upload_preset', 'darwin')
+    setLoading(true);
+    console.log("Data", data);
+    const res = await fetch(
+      'https://api.cloudinary.com/v1_1/deriue6x7/image/upload',
+      {
+        method: 'POST',
+        body: data
+      }
+    )
+    // const file = res.then(data => data.json());
+    const file = await res.json();
+    console.log("file secure" , file);
+    console.log("file secure" , file.secure_url);
+    setImage(file.secure_url)
+    setLoading(false)
+  }
+
+  return (
+    <div className="App">
+      <h1>Upload Image</h1>
+      <input
+        type="file"
+        name="file"
+        placeholder="Upload an image"
+        onChange={uploadImage}
+      />
+      {loading ? (
+        <h3>Loading...</h3>
+      ) : (
+        <img src={image} style={{ width: '300px' }} />
+      )}
+    </div>
+  )
+}
+
+export default App
+*/
+
 class Profile extends Component {
   constructor() {
     super();
     this.state = {};
   }
+  // this.uploadImage = this.uploadImage.bind(this);
 
   // function
   renderProfile() {
@@ -78,6 +134,18 @@ class Profile extends Component {
               value={this.props.currentUser.home}
               onChange={this.props.editingProfile}
             ></input>
+            <form action="/action_page.php">
+              <label for="img">Upload Profile Picture:</label>
+              <input
+                type="file"
+                id="img"
+                name="img"
+                accept="image/*"
+                onChange={this.props.uploadImage}
+              />
+              <br />
+              <input type="submit" />
+            </form>
             <select
               defaultValue={this.props.currentUser.type}
               onChange={this.props.handleSelect}
@@ -96,45 +164,7 @@ class Profile extends Component {
 
   render() {
     //(if not in edit mode)
-    return (
-      <div>
-        {/* {this.props.signedIn && !this.props.inEditMode ? (
-          <div>
-            <ul>
-              <li>Username: {this.props.currentUser.username}</li>
-              <li>Email: {this.props.currentUser.email}</li>
-              <li>Home: {this.props.currentUser.home}</li>
-            </ul>
-            <button onClick={this.props.editProfile}>Edit Profile</button>
-          </div>
-        ) : this.props.signedIn && this.props.inEditMode ? (
-          <div>
-            <form onSubmit={this.props.editProfile}>
-              Username:
-              <input
-                name='username'
-                value={this.props.currentUser.username}
-                onChange={this.props.editingProfile}
-              ></input>
-              Email:
-              <input
-                name='email'
-                value={this.props.currentUser.email}
-                onChange={this.props.editingProfile}
-              ></input>
-              Home:
-              <input
-                name='home'
-                value={this.props.currentUser.home}
-                onChange={this.props.editingProfile}
-              ></input>
-              <button type='submit'>Confirm Profile</button>
-            </form>
-          </div>
-        ) : null} */}
-        {this.renderProfile()}
-      </div>
-    );
+    return <div>{this.renderProfile()}</div>;
   }
 }
 
