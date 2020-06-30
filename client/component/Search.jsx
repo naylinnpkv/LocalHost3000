@@ -31,6 +31,7 @@ class Search extends Component {
       .then((data) => {
         if (data.err) {
           this.setState({
+            hasResults: false,
             searchVal: "",
             error: "No results found",
           });
